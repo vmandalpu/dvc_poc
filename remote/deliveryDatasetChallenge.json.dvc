@@ -1,0 +1,7 @@
+md5: 316b2019490a758f9af351d27bfbdc67
+outs:
+- md5: 90b0eba9d1bbc81ede7012aad79b03cc
+  path: deliveryDatasetChallenge.json
+  cache: true
+  metric: false
+  persist: false
