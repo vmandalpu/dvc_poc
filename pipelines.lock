@@ -7,3 +7,34 @@ preprocessing:
   outs:
   - path: data\train_data.csv
     md5: 58aa79e3ec6aaa7895f343fb6d62e2e7
+prepare:
+  cmd: python src\prepare_data.py --datafile data\train_data.csv --outpath features
+    --seed 42 --train_split 0.25
+  deps:
+  - path: data\train_data.csv
+    md5: 58aa79e3ec6aaa7895f343fb6d62e2e7
+  - path: src\prepare_data.py
+    md5: 20a6a846c64f6fde3b83bb471f3b8233
+  outs:
+  - path: features\X_pca_resampled.pkl
+    md5: e13a80abd41a63351830811a4f4b6d9f
+  - path: features\X_pca_test.pkl
+    md5: 5f2570df858d84ac2c00dc72f2ee22bd
+  - path: features\y_resampled.pkl
+    md5: a19ead16c8ee766dfd1fbb19d671f9da
+  - path: features\y_test.pkl
+    md5: b68cee20a9f92b2ba8cbd8f132aa59fc
+train:
+  cmd: python src\train_model.py --data_dir features --outpath model
+  deps:
+  - path: src\train_model.py
+    md5: af363da0d2df2a9dacda04075207d3fc
+  - path: features\X_pca_resampled.pkl
+    md5: e13a80abd41a63351830811a4f4b6d9f
+  - path: features\y_resampled.pkl
+    md5: a19ead16c8ee766dfd1fbb19d671f9da
+  outs:
+  - path: metrics/train_metric.json
+    md5: 8f9b9ed2a4e8e5a83ae3a63d85bdced5
+  - path: model\SGDCClassifier.pkl
+    md5: ac5c633f0b151f4b32b12936b434f690

@@ -6,3 +6,24 @@ stages:
     - remote/deliveryDatasetChallenge.json
     outs:
     - data\train_data.csv
+  prepare:
+    cmd: python src\prepare_data.py --datafile data\train_data.csv --outpath features
+      --seed 42 --train_split 0.25
+    deps:
+    - data\train_data.csv
+    - src\prepare_data.py
+    outs:
+    - features\X_pca_resampled.pkl
+    - features\X_pca_test.pkl
+    - features\y_resampled.pkl
+    - features\y_test.pkl
+  train:
+    cmd: python src\train_model.py --data_dir features --outpath model
+    deps:
+    - src\train_model.py
+    - features\X_pca_resampled.pkl
+    - features\y_resampled.pkl
+    metrics_no_cache:
+    - metrics/train_metric.json
+    outs:
+    - model\SGDCClassifier.pkl
