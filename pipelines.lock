@@ -1,0 +1,9 @@
+preprocessing:
+  cmd: python src\get_data.py --datafile remote/deliveryDatasetChallenge.json --outpath
+    data
+  deps:
+  - path: remote/deliveryDatasetChallenge.json
+    md5: 90b0eba9d1bbc81ede7012aad79b03cc
+  outs:
+  - path: data\train_data.csv
+    md5: 58aa79e3ec6aaa7895f343fb6d62e2e7

@@ -1,0 +1,8 @@
+stages:
+  preprocessing:
+    cmd: python src\get_data.py --datafile remote/deliveryDatasetChallenge.json --outpath
+      data
+    deps:
+    - remote/deliveryDatasetChallenge.json
+    outs:
+    - data\train_data.csv
