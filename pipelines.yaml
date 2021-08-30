@@ -27,3 +27,11 @@ stages:
     - metrics/train_metric.json
     outs:
     - model\SGDCClassifier.pkl
+  evaluate:
+    cmd: python src\evaluate_model.py --model_dir model --data_dir features
+    deps:
+    - features\X_pca_test.pkl
+    - features\y_test.pkl
+    - model\SGDCClassifier.pkl
+    metrics_no_cache:
+    - metrics\evaluate_metrics.json

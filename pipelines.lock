@@ -28,13 +28,25 @@ train:
   cmd: python src\train_model.py --data_dir features --outpath model
   deps:
   - path: src\train_model.py
-    md5: af363da0d2df2a9dacda04075207d3fc
+    md5: eb10709fd3eae20e79c613683b07d68e
   - path: features\X_pca_resampled.pkl
     md5: e13a80abd41a63351830811a4f4b6d9f
   - path: features\y_resampled.pkl
     md5: a19ead16c8ee766dfd1fbb19d671f9da
   outs:
   - path: metrics/train_metric.json
-    md5: 8f9b9ed2a4e8e5a83ae3a63d85bdced5
+    md5: 74a60e2c796e441fa942547437db4a61
   - path: model\SGDCClassifier.pkl
-    md5: ac5c633f0b151f4b32b12936b434f690
+    md5: 0916fdc4ee9513bdf4665646cd74b0a9
+evaluate:
+  cmd: python src\evaluate_model.py --model_dir model --data_dir features
+  deps:
+  - path: features\X_pca_test.pkl
+    md5: 5f2570df858d84ac2c00dc72f2ee22bd
+  - path: features\y_test.pkl
+    md5: b68cee20a9f92b2ba8cbd8f132aa59fc
+  - path: model\SGDCClassifier.pkl
+    md5: 0916fdc4ee9513bdf4665646cd74b0a9
+  outs:
+  - path: metrics\evaluate_metrics.json
+    md5: 21c2ae9c7cbaaa22c299727296297e04
