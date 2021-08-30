@@ -1,0 +1,1 @@
+{"GradientBoosting": {"f1_score": 0.7997023176695726, "recall": 0.4482758620689655, "balanced_accuracy": 0.6307398299084064}, "RandomForestClassifier": {"f1_score": 0.783967680204125, "recall": 0.5804597701149425, "balanced_accuracy": 0.6861230181994452}, "SGDCClassifier": {"f1_score": 0.663618966617053, "recall": 0.6379310344827587, "balanced_accuracy": 0.6512684538719822}}
