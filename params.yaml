@@ -1,0 +1,20 @@
+
+get_data:
+  source_file: 'remote\deliveryDatasetChallenge.json'
+  outpath: 'data'
+
+prepare_data:
+  datafile: 'data\train_data.csv'
+  seed: 30
+  split: 0.25
+  outpath: 'features'
+
+training:
+  data_dir: 'features' 
+  outpath: 'model'
+
+evaluate:
+  model_dir: 'model'
+  outpath: 'metrics'
+
+
