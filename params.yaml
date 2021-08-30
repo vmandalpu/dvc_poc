@@ -1,24 +1,23 @@
-
 get_data:
-  source_file: 'remote\deliveryDatasetChallenge.json'
-  outpath: 'data'
+  source_file: remote\deliveryDatasetChallenge.json
+  outpath: data
 
 prepare_data:
-  datafile: 'data\train_data.csv'
+  datafile: data\train_data.csv
   seed: 40
   split: 0.25
-  outpath: 'features'
+  outpath: features
 
 training:
-  data_dir: 'features' 
-  outpath: 'model'
-  penalty: 'l2'
+  data_dir: features
+  outpath: model
+  penalty: l1
   alpha: 0.0001
   depth: 8
-  min_samples_split: 10
+  min_samples_split: 6
 
 evaluate:
-  model_dir: 'model'
-  outpath: 'metrics'
+  model_dir: model
+  outpath: metrics
 
 
