@@ -1,0 +1,67 @@
+preprocessing:
+  cmd: python src\get_data.py --datafile remote/deliveryDatasetChallenge.json --outpath
+    data
+  deps:
+  - path: remote/deliveryDatasetChallenge.json
+    md5: 90b0eba9d1bbc81ede7012aad79b03cc
+  outs:
+  - path: data\train_data.csv
+    md5: 58aa79e3ec6aaa7895f343fb6d62e2e7
+prepare:
+  cmd: python src\prepare_data.py
+  deps:
+  - path: data\train_data.csv
+    md5: 58aa79e3ec6aaa7895f343fb6d62e2e7
+  - path: src\prepare_data.py
+    md5: 7e76290d78043ab84883c53009908abc
+  params:
+    params.yaml:
+      prepare_data.seed: 40
+      prepare_data.split: 0.25
+      prepare_data.datafile: data\train_data.csv
+      prepare_data.outpath: features
+  outs:
+  - path: features\X_pca_resampled.pkl
+    md5: f717c656580a96a24da917fa6c3b6c52
+  - path: features\X_pca_test.pkl
+    md5: 0a408bbed8909afa1e95127db20819cc
+  - path: features\y_resampled.pkl
+    md5: 10f1aff9387ceea584663461a04e74e6
+  - path: features\y_test.pkl
+    md5: 0f4b6ad5b3102d6bcd587c99bb285209
+train:
+  cmd: python src\train_model.py
+  deps:
+  - path: src\train_model.py
+    md5: 7ac555208fe6c8ab319418471eb233b1
+  - path: features\X_pca_resampled.pkl
+    md5: f717c656580a96a24da917fa6c3b6c52
+  - path: features\y_resampled.pkl
+    md5: 10f1aff9387ceea584663461a04e74e6
+  params:
+    params.yaml:
+      training.data_dir: features
+      training.outpath: model
+      training.depth: 8
+      training.penalty: l2
+      training.alpha: 0.0001
+      training.min_samples_split: 10
+  outs:
+  - path: metrics/train_metric.json
+    md5: 03b494733c730d929a3dc8e6c0042b57
+  - path: model\SGDCClassifier.pkl
+    md5: 4870c9887b474c99f3a5605a97efef86
+evaluate:
+  cmd: python src\evaluate_model.py --model_dir model --data_dir features
+  deps:
+  - path: features\X_pca_test.pkl
+    md5: 0a408bbed8909afa1e95127db20819cc
+  - path: features\y_test.pkl
+    md5: 0f4b6ad5b3102d6bcd587c99bb285209
+  - path: model\SGDCClassifier.pkl
+    md5: 4870c9887b474c99f3a5605a97efef86
+  - path: src\evaluate_model.py
+    md5: e9800d8d68e42e43f5b5a0edd92b07d2
+  outs:
+  - path: metrics\evaluate_metrics.json
+    md5: d446c333a4b29d9f63a41fed7d4913aa
