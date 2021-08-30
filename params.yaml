@@ -5,13 +5,17 @@ get_data:
 
 prepare_data:
   datafile: 'data\train_data.csv'
-  seed: 30
+  seed: 40
   split: 0.25
   outpath: 'features'
 
 training:
   data_dir: 'features' 
   outpath: 'model'
+  penalty: 'l2'
+  alpha: 0.0001
+  depth: 8
+  min_samples_split: 10
 
 evaluate:
   model_dir: 'model'

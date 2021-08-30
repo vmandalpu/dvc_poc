@@ -3,6 +3,7 @@ import argparse
 import os
 import pandas as pd
 import numpy as np
+import yaml
 from sklearn.preprocessing import LabelEncoder,StandardScaler, normalize,PowerTransformer
 from sklearn.decomposition import PCA, FastICA
 from imblearn.over_sampling import ADASYN
@@ -17,9 +18,18 @@ if __name__ == "__main__":
     parse = argparse.ArgumentParser()
     parse.add_argument("--datafile", help="path to local data file")
     parse.add_argument("--seed", help="Random state in Integer")
-    parse.add_argument("--train_split", help= "Train test split value between 0.2 to 0.4")
+    parse.add_argument("--split", help= "Train test split value between 0.2 to 0.4")
     parse.add_argument("--outpath", help="path to local directory to which to save artifacts")
     args = parse.parse_args()
+
+
+    # read params
+    params = yaml.safe_load(open('params.yaml'))['prepare_data']
+
+    args.seed = params['seed']
+    args.split = params['split']
+    args.datafile = params['datafile']
+    args.outpath = params['outpath']
     
     # check if SDE file is specified
     if args.datafile is None or os.path.isfile(args.datafile) is False:
@@ -32,8 +42,8 @@ if __name__ == "__main__":
     if args.seed is None:
         args.seed = 42
 
-    if args.train_split is None:
-        args.train_split = 0.2
+    if args.split is None:
+        args.split = 0.2
 
 
     train_df = pd.read_csv(args.datafile)
@@ -50,7 +60,7 @@ if __name__ == "__main__":
         'employeePrevComps', 'gender_F', 'gender_M', 'gender_X',
         'driverAge', 'weekDay', 'regionEncoded']
 
-    imp = IterativeImputer(random_state=42)
+    imp = IterativeImputer(random_state=int(args.seed))
     imp.fit(train_df[feature_cols])#make sure Success column is not considered for  iterative imputing
 
 
@@ -77,7 +87,7 @@ if __name__ == "__main__":
 
 
     X_train, X_test, y_train, y_test = train_test_split(train_imp[feature_cols], train_imp.success,
-                                                        test_size=float(args.train_split),random_state=int(args.seed))
+                                                        test_size=float(args.split),random_state=int(args.seed))
     print(y_train.value_counts())
 
 

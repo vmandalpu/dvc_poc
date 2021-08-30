@@ -7,22 +7,33 @@ stages:
     outs:
     - data\train_data.csv
   prepare:
-    cmd: python src\prepare_data.py --datafile data\train_data.csv --outpath features
-      --seed 42 --train_split 0.25
+    cmd: python src\prepare_data.py
     deps:
     - data\train_data.csv
     - src\prepare_data.py
+    params:
+    - prepare_data.seed
+    - prepare_data.split
+    - prepare_data.datafile
+    - prepare_data.outpath
     outs:
     - features\X_pca_resampled.pkl
     - features\X_pca_test.pkl
     - features\y_resampled.pkl
     - features\y_test.pkl
   train:
-    cmd: python src\train_model.py --data_dir features --outpath model
+    cmd: python src\train_model.py
     deps:
     - src\train_model.py
     - features\X_pca_resampled.pkl
     - features\y_resampled.pkl
+    params:
+    - training.data_dir
+    - training.outpath
+    - training.depth
+    - training.penalty
+    - training.alpha
+    - training.min_samples_split
     metrics_no_cache:
     - metrics/train_metric.json
     outs:
@@ -33,5 +44,6 @@ stages:
     - features\X_pca_test.pkl
     - features\y_test.pkl
     - model\SGDCClassifier.pkl
+    - src\evaluate_model.py
     metrics_no_cache:
     - metrics\evaluate_metrics.json
