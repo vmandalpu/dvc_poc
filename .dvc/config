@@ -1,0 +1,4 @@
+[core]
+    remote = external
+['remote "external"']
+    url = C:/Users/vasmanda/Projects/external
